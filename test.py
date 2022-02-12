@@ -1,25 +1,32 @@
-## build a QApplication before building other widgets
+from PyQt5 import QtWidgets
+from pyqtgraph import PlotWidget, plot
 import pyqtgraph as pg
-pg.mkQApp()
+import sys  # We need sys so that we can pass argv to QApplication
+import os
 
-## make a widget for displaying 3D objects
-import pyqtgraph.opengl as gl
-view = gl.GLViewWidget()
-view.show()
+class MainWindow(QtWidgets.QMainWindow):
 
-## create three grids, add each to the view
-xgrid = gl.GLGridItem()
-ygrid = gl.GLGridItem()
-zgrid = gl.GLGridItem()
-view.addItem(xgrid)
-view.addItem(ygrid)
-view.addItem(zgrid)
+    def __init__(self, *args, **kwargs):
+        super(MainWindow, self).__init__(*args, **kwargs)
 
-## rotate x and y grids to face the correct direction
-xgrid.rotate(90, 0, 1, 0)
-ygrid.rotate(90, 1, 0, 0)
+        self.graphWidget = pg.PlotWidget()
+        self.setCentralWidget(self.graphWidget)
 
-## scale each grid differently
-xgrid.scale(0.2, 0.1, 0.1)
-ygrid.scale(0.2, 0.1, 0.1)
-zgrid.scale(0.1, 0.2, 0.1)
+        hour = [1,2,3,4,5,6,7,8,9,10]
+        temperature = [30,32,34,32,33,31,29,32,35,45]
+
+        self.graphWidget.setBackground('w')
+
+        pen = pg.mkPen(color=(255, 0, 0))
+        self.graphWidget.plot(hour, temperature, pen=pen)
+
+
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    main = MainWindow()
+    main.show()
+    sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()
