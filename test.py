@@ -1,32 +1,19 @@
-from PyQt5 import QtWidgets
-from pyqtgraph import PlotWidget, plot
-import pyqtgraph as pg
-import sys  # We need sys so that we can pass argv to QApplication
-import os
+from pendulum.pendulum import Pendulum
+import numpy as np
 
-class MainWindow(QtWidgets.QMainWindow):
+# Simulation parameters
+h = 0.001   # [s] Integration time step-size
+t0 = 5      # [s] Starting time
+g = 9.81    # [m/s^2] Graviational acceleration
+L = 2       # [m] Length of pendulum arm
 
-    def __init__(self, *args, **kwargs):
-        super(MainWindow, self).__init__(*args, **kwargs)
+# Initial conditions
+theta_0 = np.pi/4
+omega_0 = -np.pi/2
 
-        self.graphWidget = pg.PlotWidget()
-        self.setCentralWidget(self.graphWidget)
+p = Pendulum(h, g, L, theta_0, omega_0, t0)
 
-        hour = [1,2,3,4,5,6,7,8,9,10]
-        temperature = [30,32,34,32,33,31,29,32,35,45]
+for i in range(100):
+    p.iterate()
 
-        self.graphWidget.setBackground('w')
-
-        pen = pg.mkPen(color=(255, 0, 0))
-        self.graphWidget.plot(hour, temperature, pen=pen)
-
-
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    main = MainWindow()
-    main.show()
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
+print(p.cartesian())
