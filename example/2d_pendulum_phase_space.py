@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 def phase_space():
     h = 0.001                # [s] Integration step
     t0 = 0                  # [s] Starting time
-    tf = 100                  # [s] End time
+    tf = 10                  # [s] End time
     g = 9.81                # [m/s^2] Gravitational acceleration
     L = 1                   # [m] Pendulum length
     theta_0 = np.pi/2       # ['] Pendulum Starting position 
@@ -34,13 +34,13 @@ def phase_space():
 
     plt.figure()
     plt.title(r"Phase Space Diagram($\theta,\omega$)")
-    plt.plot(theta, omega, "-")
+    plt.plot(theta, omega, "k-", linewidth=1)
     plt.xlabel(r"$\theta$ [$\degree$]")
     plt.ylabel(r"$\omega$ [$\degree/s$]")
 
     plt.figure()
     plt.title(r"Position over time $\theta(t)$")
-    plt.plot(time, theta, ".-")
+    plt.plot(time, theta, "k.-", linewidth=1, markersize=10)
     plt.xlabel("t [s]")
     plt.ylabel(r"$\theta(t)$ [$\degree$]")
 

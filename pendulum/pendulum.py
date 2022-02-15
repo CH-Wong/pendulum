@@ -26,9 +26,7 @@ class Pendulum2D():
         self.time = t0
         self.theta = theta_0
         self.omega = omega_0
-        self.x, self.y = self.cartesian()
-
-        self.cartesian()
+        self.coordinates = self.cartesian()
 
     def cartesian(self):
         # Translate to cartesion coordinates for plotting
@@ -79,18 +77,22 @@ class Pendulum2D():
         return (self.omega, self.theta)
 
 class Pendulum3D():
-    def __init__(self, h, g, L, theta_0, phi_0, omega_0, sigma_0, t0=0):
+    def __init__(self, h, g, L, m, theta_0, phi_0, omega_0, sigma_0, t0=0):
         self.h = h
         self.L = L
         self.g = g
+        self.m = m
 
         # Set variables to initial conditions
         self.time = t0
+
         self.theta = theta_0
         self.phi = phi_0
+
         self.omega = omega_0
         self.sigma = sigma_0
-        self.x, self.y, self.z = self.cartesian()
+        
+        self.coordinates = self.cartesian()
 
 
     def cartesian(self):
