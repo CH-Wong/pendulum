@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtWidgets
 import pyqtgraph.opengl as gl
 import pyqtgraph as pg
 
-from pendulum.pendulum import Pendulum
+from pendulum.pendulum import Pendulum2D
 
 # Mathematics here: https://en.wikipedia.org/wiki/Spherical_pendulum
        
@@ -26,7 +26,7 @@ class pendulum_gui(QtWidgets.QWidget):
         self.iterations = iterations
 
         # Set pendulum class in this class
-        self.Pendulum = Pendulum
+        self.Pendulum = Pendulum2D
 
         # Get initial phase-space (theta, omega) coordinates from current coordinates in Pendulum class
         self.theta = np.ones(shown_points)*self.Pendulum.theta
