@@ -144,16 +144,13 @@ class Pendulum3DGui(QtWidgets.QWidget):
         self.coordinates[:,0] *= x0
         self.coordinates[:,1] *= y0
         self.coordinates[:,2] *= z0
-
-        # # Set up PyQtGraph styling configurations        
-        # pg.setConfigOption('background', 0.95)
-        # pg.setConfigOptions(antialias=True)
         
         # Swinging pendulum animation
         # https://pyqtgraph.readthedocs.io/en/latest/3dgraphics/
         # Create PyQTGraph plotting widget instance and configure layout
         self.plot_widget = gl.GLViewWidget()
         self.plot_widget.show()
+
         self.grid_widget = gl.GLGridItem()
         self.grid_widget.setSize(3*self.Pendulum.L, 3*self.Pendulum.L, 3*self.Pendulum.L)
         self.grid_widget.setSpacing(0.1, 0.1, 0.1)
