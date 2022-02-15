@@ -1,20 +1,5 @@
-# Native libraries
-import sys
-
 # External Libraries
-from matplotlib import cm
 import numpy as np
-import matplotlib.pyplot as plt
-
-from scipy.interpolate import griddata
-from matplotlib.colors import Colormap
-
-from PyQt5 import QtCore, QtWidgets
-import pyqtgraph.opengl as gl
-import pyqtgraph as pg
-
-
-# Mathematics here: https://en.wikipedia.org/wiki/Spherical_pendulum
 
 class Pendulum2D():
     def __init__(self, h, g, L, theta_0, omega_0, t0=0):
@@ -100,6 +85,7 @@ class Pendulum3D():
         return (self.L*np.sin(self.theta)*np.cos(self.phi), self.L*np.sin(self.theta)*np.sin(self.phi), self.L*(1 - np.cos(self.theta)))
 
     def iterate(self):
+        # Mathematics here: https://en.wikipedia.org/wiki/Spherical_pendulum
         # Implementation of 4th order Runga-Kutta integration of simple pendulum equation
         # https://lpsa.swarthmore.edu/NumInt/NumIntFirst.html
         # \frac{d\theta}{dt} = \omega

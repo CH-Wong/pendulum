@@ -2,21 +2,13 @@
 import sys
 
 # External Libraries
-from matplotlib import cm
 import numpy as np
-import matplotlib.pyplot as plt
-
-from scipy.interpolate import griddata
-from matplotlib.colors import Colormap
-
 from PyQt5 import QtCore, QtWidgets
 import pyqtgraph.opengl as gl
 import pyqtgraph as pg
 
 from pendulum.pendulum import Pendulum2D, Pendulum3D
 
-# Mathematics here: https://en.wikipedia.org/wiki/Spherical_pendulum
-       
 class Pendulum2DGui(QtWidgets.QWidget):
     def __init__(self, Pendulum, shown_points = 100, interval = None, iterations=1):
         # Initialize using built-in QWidget __init__ from inherited class
@@ -124,7 +116,6 @@ class Pendulum2DGui(QtWidgets.QWidget):
         # Update Phase space animation
         self.phase_space_trace.setData(self.theta, self.omega)
         self.phase_space_current.setData([self.theta[-1]], [self.omega[-1]])
-
 
 
 class Pendulum3DGui(QtWidgets.QWidget):
@@ -270,23 +261,6 @@ class Pendulum3DGui(QtWidgets.QWidget):
 
 
 def main():
-    # # 2D PENDULUM ANIMATION
-    # # Simulation parameters
-    # h = 0.001   # [s] Integration time step-size
-    # t0 = 5      # [s] Starting time
-    # g = 9.81    # [m/s^2] Graviational acceleration
-    # L = 1       # [m] Length of pendulum arm
-
-    # # Initial conditions
-    # theta_0 = np.pi/2
-    # omega_0 = -np.pi/2
-
-    # p = Pendulum2D(h, g, L, theta_0, omega_0, t0)
-
-    # app = QtWidgets.QApplication(sys.argv)
-    # gui = Pendulum2DGui(p, shown_points=100, iterations=5)
-    # gui.show()
-
     # 3D PENDULUM ANIMATION
     # Simulation parameters
     h = 0.001   # [s] Integration time step-size
@@ -302,17 +276,18 @@ def main():
     omega_0 = -np.pi/2     # [rad/s] Initial polar angular velocity
     sigma_0 = np.pi/2      # [rad/s] Initial azimuthal angular velocity 
 
-    p = Pendulum3D(h, g, L, m, theta_0, phi_0, omega_0, sigma_0, t0)
-
     app = QtWidgets.QApplication(sys.argv)
-    gui = Pendulum3DGui(p, shown_points=1000, iterations=5)
-    # gui.show()
+
+    p_3D = Pendulum3D(h, g, L, m, theta_0, phi_0, omega_0, sigma_0, t0)
+    gui_3D = Pendulum3DGui(p_3D, shown_points=5000, iterations=10)
+
+
+    p_2D = Pendulum2D(h, g, L, theta_0, omega_0, t0)
+    gui_2D = Pendulum2DGui(p_2D, shown_points=1000, iterations=5)
+    gui_2D.show()
 
 
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
     main()
-
-
-
