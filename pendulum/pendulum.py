@@ -11,11 +11,13 @@ class Pendulum2D():
         self.time = t0
         self.theta = theta_0
         self.omega = omega_0
-        self.coordinates = self.cartesian()
 
     def cartesian(self):
         # Translate to cartesion coordinates for plotting
         return (self.L*np.sin(self.theta), -self.L*np.cos(self.theta))
+
+    def phase_space(self):
+        return (self.theta, self.omega)
 
     def iterate(self):
         # Implementation of 4th order Runga-Kutta integration of simple pendulum equation
@@ -77,20 +79,26 @@ class Pendulum3D():
         self.omega = omega_0
         self.sigma = sigma_0
         
-        self.coordinates = self.cartesian()
-
-
     def cartesian(self):
         # Translate to cartesion coordinates for plotting
         return (self.L*np.sin(self.theta)*np.cos(self.phi), self.L*np.sin(self.theta)*np.sin(self.phi), self.L*(1 - np.cos(self.theta)))
+
+    def phase_space(self):
+        # Compute conjugate momentum theta
+        momentum_theta = self.m*self.L**2*self.omega
+        return (self.theta, self.phi, momentum_theta)
 
     def iterate(self):
         # Mathematics here: https://en.wikipedia.org/wiki/Spherical_pendulum
         # Implementation of 4th order Runga-Kutta integration of simple pendulum equation
         # https://lpsa.swarthmore.edu/NumInt/NumIntFirst.html
         # \frac{d\theta}{dt} = \omega
-        # \frac{d\omega}{dt} = -\frac{g}{L}sin(\theta)
-        # TODO: Add friction?
+        # \frac{d\phi}{dt} = \sigma
+
+        # \frac{d\omega}{dt} = sin(\theta)cos(\theta)\sigma^2-\frac{g}{L}sin(\theta)
+        # \frac{d\sigma}{dt} = -2*\frac{\sigma\omega}{tan(\theta)}
+        # TODO: Add friction? -> cant use standard Euler-Lagrange formalism for this!
+        
         self.time += self.h
 
         # Estimate function slope k using current known (or previously guessed) position (theta, omega) 
