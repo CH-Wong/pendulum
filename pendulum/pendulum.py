@@ -46,20 +46,20 @@ class Pendulum2D():
         omega_2 = self.omega + k2_omega*self.h/2
 
         # Use first estimate (theta_1, omega_1) to repeat the process
-        k3_theta = omega_2
-        k3_omega = - (self.g/self.L)*np.sin(theta_2)
+        k4_theta = omega_2
+        k4_omega = - (self.g/self.L)*np.sin(theta_2)
 
         # Now use slope k2 to make another estimate, more accurate than (theta_1, omega_1)
-        theta_3 = self.theta + k3_theta*self.h/2
-        omega_3 = self.omega + k3_omega*self.h/2
+        theta_3 = self.theta + k4_theta*self.h/2
+        omega_3 = self.omega + k4_omega*self.h/2
 
         # Use first estimate (theta_1, omega_1) to repeat the process
         k4_theta = omega_3
         k4_omega = - (self.g/self.L)*np.sin(theta_3)
 
-        # Use weighted average k1, k2, k3, k4 to estimate the actual next time point
-        self.theta += self.h*(k1_theta + 2*k2_theta + 2*k3_theta + k4_theta)/6
-        self.omega += self.h*(k1_omega + 2*k2_omega + 2*k3_omega + k4_omega)/6
+        # Use weighted average k1, k2, k4, k4 to estimate the actual next time point
+        self.theta += self.h*(k1_theta + 2*k2_theta + 2*k4_theta + k4_theta)/6
+        self.omega += self.h*(k1_omega + 2*k2_omega + 2*k4_omega + k4_omega)/6
 
         return (self.omega, self.theta)
 
@@ -97,7 +97,6 @@ class Pendulum3D():
 
         # \frac{d\omega}{dt} = sin(\theta)cos(\theta)\sigma^2-\frac{g}{L}sin(\theta)
         # \frac{d\sigma}{dt} = -2*\frac{\sigma\omega}{tan(\theta)}
-        # TODO: Add friction? -> cant use standard Euler-Lagrange formalism for this!
         
         self.time += self.h
 
@@ -131,18 +130,18 @@ class Pendulum3D():
         sigma_2 = self.sigma + k2_sigma*self.h/2
 
         # Use first estimate (theta_2, omega_2) to repeat the process
-        k3_theta = omega_2
-        k3_phi  = sigma_2
+        k4_theta = omega_2
+        k4_phi  = sigma_2
 
-        k3_omega = np.sin(theta_2)*np.cos(theta_2)*sigma_2**2 - (self.g/self.L)*np.sin(theta_2)
-        k3_sigma = -2*omega_2*sigma_2/np.tan(theta_2)
+        k4_omega = np.sin(theta_2)*np.cos(theta_2)*sigma_2**2 - (self.g/self.L)*np.sin(theta_2)
+        k4_sigma = -2*omega_2*sigma_2/np.tan(theta_2)
 
         # Now use slope k2 to make another estimate, more accurate than (theta_1, omega_1)
-        theta_3 = self.theta + k3_theta*self.h/2
-        phi_3 = self.phi + k3_phi*self.h/2
+        theta_3 = self.theta + k4_theta*self.h/2
+        phi_3 = self.phi + k4_phi*self.h/2
 
-        omega_3 = self.omega + k3_omega*self.h/2
-        sigma_3 = self.sigma + k3_sigma*self.h/2
+        omega_3 = self.omega + k4_omega*self.h/2
+        sigma_3 = self.sigma + k4_sigma*self.h/2
 
         # Use first estimate (theta_1, omega_1) to repeat the process
         k4_theta = omega_3
@@ -151,11 +150,11 @@ class Pendulum3D():
         k4_omega = np.sin(theta_3)*np.cos(theta_3)*sigma_3**2 - (self.g/self.L)*np.sin(theta_3)
         k4_sigma = -2*omega_3*sigma_3/np.tan(theta_3)
 
-        # Use weighted average k1, k2, k3, k4 to estimate the actual next time point
-        self.theta += self.h*(k1_theta + 2*k2_theta + 2*k3_theta + k4_theta)/6
-        self.phi += self.h*(k1_phi + 2*k2_phi + 2*k3_phi + k4_phi)/6
-        self.omega += self.h*(k1_omega + 2*k2_omega + 2*k3_omega + k4_omega)/6
-        self.sigma += self.h*(k1_sigma + 2*k2_sigma + 2*k3_sigma + k4_sigma)/6
+        # Use weighted average k1, k2, k4, k4 to estimate the actual next time point
+        self.theta += self.h*(k1_theta + 2*k2_theta + 2*k4_theta + k4_theta)/6
+        self.phi += self.h*(k1_phi + 2*k2_phi + 2*k4_phi + k4_phi)/6
+        self.omega += self.h*(k1_omega + 2*k2_omega + 2*k4_omega + k4_omega)/6
+        self.sigma += self.h*(k1_sigma + 2*k2_sigma + 2*k4_sigma + k4_sigma)/6
 
         return (self.theta, self.phi, self.omega, self.sigma)
 
